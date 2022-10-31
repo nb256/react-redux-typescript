@@ -18,6 +18,8 @@ const Button = styled.button`
     border: 1px solid ${theme.palette.secondary.dark};
     color: ${theme.palette.primary.dark};
   }
+
+  cursor: pointer;
 `;
 
 export default Button;
