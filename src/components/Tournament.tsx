@@ -36,7 +36,7 @@ export default function Tournament({
   );
 
   return (
-    <Container>
+    <Container data-testid="tournament">
       <H6>{name}</H6>
 
       <div>Organizer: {organizer}</div>
