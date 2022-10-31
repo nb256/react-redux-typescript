@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+
 import theme from '../theme';
 
 const Container = styled.div`
@@ -6,6 +7,7 @@ const Container = styled.div`
   margin-top: ${theme.spacing(6)};
   margin-left: auto;
   margin-right: auto;
+  padding: 0 ${theme.spacing(6)};
 `;
 
 export default Container;
