@@ -4,6 +4,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import Tournaments from '../components/Tournaments';
+import AppReduxWrapper from '../utils/AppReduxWrapper';
 
 describe('Tournaments', () => {
   it('should render "Loading tournaments ..." when tournaments are loading', () => {
@@ -73,12 +74,14 @@ describe('Tournaments', () => {
       participants: { current: 5, max: 10 },
     };
     render(
-      <Tournaments
-        tournaments={[tournament]}
-        error={false}
-        loading={false}
-        retry={jest.fn()}
-      />
+      <AppReduxWrapper>
+        <Tournaments
+          tournaments={[tournament]}
+          error={false}
+          loading={false}
+          retry={jest.fn()}
+        />
+      </AppReduxWrapper>
     );
 
     expect(screen.getByText(tournament.name)).toBeInTheDocument();

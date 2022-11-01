@@ -6,6 +6,8 @@ import { Tournament as TournamentType } from '../types/Tournament';
 import H6 from './H6';
 import Button from './Button';
 import theme from '../theme';
+import useEditTournament from '../hooks/useEditTournament';
+import validateTournamentName from '../utils/validateTournamentName';
 
 const Container = styled.div`
   display: flex;
@@ -23,18 +25,34 @@ const Buttons = styled.div`
 `;
 
 export default function Tournament({
+  id,
   name,
   organizer,
   game,
   participants,
   startDate,
 }: TournamentType) {
+  const { editTournament } = useEditTournament();
+
   const formattedStartDateInTimeZone = formatInTimeZone(
     new Date(startDate),
     'Europe/London',
     `dd/MM/yyyy, HH:mm:ss zzz`
   );
 
+  const onEdit = () => {
+    const tournamentName = window?.prompt('New Tournament Name: ', name);
+
+    if (!tournamentName) {
+      return;
+    }
+    if (!validateTournamentName(tournamentName)) {
+      return window?.alert(
+        'Tournament name should contain only letters, numbers, spaces and not only spaces'
+      );
+    }
+    editTournament({ id, name: tournamentName });
+  };
   return (
     <Container data-testid="tournament">
       <H6>{name}</H6>
@@ -45,7 +63,7 @@ export default function Tournament({
       <div>Start: {formattedStartDateInTimeZone}</div>
 
       <Buttons>
-        <Button>EDIT</Button>
+        <Button onClick={onEdit}>EDIT</Button>
         <Button>DELETE</Button>
       </Buttons>
     </Container>
