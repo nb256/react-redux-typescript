@@ -160,4 +160,26 @@ describe('Home', () => {
       expect(screen.getByText('No tournaments found.')).toBeInTheDocument()
     );
   });
+
+  it('should create a tournament', async () => {
+    render(
+      <AppReduxWrapper>
+        <Home />
+      </AppReduxWrapper>
+    );
+
+    const tournamentName = 'Tournament Create Test';
+
+    window.prompt = jest.fn().mockImplementation(() => tournamentName);
+
+    await userEvent.click(
+      screen.getByText('CREATE TOURNAMENT', { selector: 'button' })
+    );
+
+    await waitFor(() =>
+      expect(
+        screen.getAllByText(tournamentName, { exact: false })[0]
+      ).toBeInTheDocument()
+    );
+  });
 });
