@@ -8,6 +8,7 @@ import Button from './Button';
 import theme from '../theme';
 import useEditTournament from '../hooks/useEditTournament';
 import validateTournamentName from '../utils/validateTournamentName';
+import useDeleteTournament from '../hooks/useDeleteTournament';
 
 const Container = styled.div`
   display: flex;
@@ -33,6 +34,7 @@ export default function Tournament({
   startDate,
 }: TournamentType) {
   const { editTournament } = useEditTournament();
+  const { deleteTournament } = useDeleteTournament();
 
   const formattedStartDateInTimeZone = formatInTimeZone(
     new Date(startDate),
@@ -53,6 +55,16 @@ export default function Tournament({
     }
     editTournament({ id, name: tournamentName });
   };
+
+  const onDelete = () => {
+    const isConfirmed = window?.confirm(
+      `Do you really want to delete the tournament "${name}"?`
+    );
+    if (isConfirmed) {
+      deleteTournament(id);
+    }
+  };
+
   return (
     <Container data-testid="tournament">
       <H6>{name}</H6>
@@ -64,7 +76,7 @@ export default function Tournament({
 
       <Buttons>
         <Button onClick={onEdit}>EDIT</Button>
-        <Button>DELETE</Button>
+        <Button onClick={onDelete}>DELETE</Button>
       </Buttons>
     </Container>
   );

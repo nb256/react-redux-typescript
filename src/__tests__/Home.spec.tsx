@@ -78,4 +78,48 @@ describe('Home', () => {
     const updatedNameElement2 = screen.queryByText(onlySpaces);
     expect(updatedNameElement2).not.toBeInTheDocument();
   });
+
+  it('should delete tournament', async () => {
+    render(
+      <AppReduxWrapper>
+        <Home />
+      </AppReduxWrapper>
+    );
+
+    await waitFor(() =>
+      expect(screen.getAllByTestId('tournament')[0]).toBeInTheDocument()
+    );
+
+    const firstTournament = screen.getAllByTestId('tournament')[0];
+
+    window.confirm = jest.fn().mockImplementation(() => true);
+
+    await userEvent.click(
+      within(firstTournament).getByText('DELETE', { selector: 'button' })
+    );
+
+    expect(firstTournament).not.toBeInTheDocument();
+  });
+
+  it('should not delete tournament if user cancels', async () => {
+    render(
+      <AppReduxWrapper>
+        <Home />
+      </AppReduxWrapper>
+    );
+
+    await waitFor(() =>
+      expect(screen.getAllByTestId('tournament')[0]).toBeInTheDocument()
+    );
+
+    const firstTournament = screen.getAllByTestId('tournament')[0];
+
+    window.confirm = jest.fn().mockImplementation(() => false);
+
+    await userEvent.click(
+      within(firstTournament).getByText('DELETE', { selector: 'button' })
+    );
+
+    expect(firstTournament).toBeInTheDocument();
+  });
 });
