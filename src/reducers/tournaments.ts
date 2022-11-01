@@ -7,6 +7,9 @@ import {
   EDIT_TOURNAMENT_BEGIN,
   EDIT_TOURNAMENT_SUCCESS,
   EDIT_TOURNAMENT_FAILURE,
+  DELETE_TOURNAMENT_BEGIN,
+  DELETE_TOURNAMENT_SUCCESS,
+  DELETE_TOURNAMENT_FAILURE,
 } from '../actions/tournament';
 import { Tournament } from '../types/Tournament';
 
@@ -24,7 +27,11 @@ export default function tournaments(
   } = initialState,
   action: {
     type: string;
-    payload: { tournaments: Tournament[]; tournament: Tournament };
+    payload: {
+      tournaments: Tournament[];
+      tournament: Tournament;
+      tournamentId: string;
+    };
   }
 ) {
   switch (action.type) {
@@ -66,6 +73,24 @@ export default function tournaments(
       };
 
     case EDIT_TOURNAMENT_FAILURE:
+      return {
+        ...state,
+      };
+
+    case DELETE_TOURNAMENT_BEGIN:
+      return {
+        ...state,
+      };
+
+    case DELETE_TOURNAMENT_SUCCESS:
+      return {
+        ...state,
+        tournaments: state.tournaments.filter(
+          (tournament) => tournament.id !== action.payload.tournamentId
+        ),
+      };
+
+    case DELETE_TOURNAMENT_FAILURE:
       return {
         ...state,
       };

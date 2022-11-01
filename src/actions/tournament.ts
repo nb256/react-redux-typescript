@@ -47,3 +47,43 @@ export async function editTournament(
     window?.location.reload();
   }
 }
+
+export const DELETE_TOURNAMENT_BEGIN = 'DELETE_TOURNAMENT_BEGIN';
+export const DELETE_TOURNAMENT_SUCCESS = 'DELETE_TOURNAMENT_SUCCESS';
+export const DELETE_TOURNAMENT_FAILURE = 'DELETE_TOURNAMENT_FAILURE';
+
+export const deleteTournamentBegin = () => ({
+  type: DELETE_TOURNAMENT_BEGIN,
+});
+
+export const deleteTournamentSuccess = (tournamentId: string) => ({
+  type: DELETE_TOURNAMENT_SUCCESS,
+  payload: { tournamentId },
+});
+
+export const deleteTournamentFailure = () => ({
+  type: DELETE_TOURNAMENT_FAILURE,
+});
+
+export async function deleteTournament(
+  dispatch: Dispatch<AnyAction>,
+  tournamentId: string
+) {
+  dispatch(deleteTournamentBegin());
+
+  // Optimistic update
+  dispatch(deleteTournamentSuccess(tournamentId));
+
+  const deletedTournament = await request<Tournament>(
+    `${API_TOURNAMENTS_URL}/${tournamentId}`,
+    {
+      method: 'DELETE',
+    }
+  );
+  if (!deletedTournament) {
+    window?.alert("Couldn't delete tournament");
+    dispatch(deleteTournamentFailure());
+    //refresh the page to get the latest data
+    window?.location.reload();
+  }
+}
