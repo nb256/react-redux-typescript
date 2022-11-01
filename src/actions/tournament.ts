@@ -87,3 +87,41 @@ export async function deleteTournament(
     window?.location.reload();
   }
 }
+
+export const CREATE_TOURNAMENT_BEGIN = 'CREATE_TOURNAMENT_BEGIN';
+export const CREATE_TOURNAMENT_SUCCESS = 'CREATE_TOURNAMENT_SUCCESS';
+export const CREATE_TOURNAMENT_FAILURE = 'CREATE_TOURNAMENT_FAILURE';
+
+export const createTournamentBegin = () => ({
+  type: CREATE_TOURNAMENT_BEGIN,
+});
+
+export const createTournamentSuccess = (tournament: Tournament) => ({
+  type: CREATE_TOURNAMENT_SUCCESS,
+  payload: { tournament },
+});
+
+export const createTournamentFailure = () => ({
+  type: CREATE_TOURNAMENT_FAILURE,
+});
+
+export async function createTournament(
+  dispatch: Dispatch<AnyAction>,
+  tournament: Partial<Tournament>
+) {
+  dispatch(createTournamentBegin());
+
+  const createdTournament = await request<Tournament>(API_TOURNAMENTS_URL, {
+    method: 'POST',
+    body: JSON.stringify({ name: tournament.name }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  if (createdTournament) {
+    dispatch(createTournamentSuccess(createdTournament));
+  } else {
+    dispatch(createTournamentFailure());
+    window?.alert("Couldn't create tournament");
+  }
+}

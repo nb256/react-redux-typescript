@@ -13,6 +13,9 @@ import {
   DELETE_TOURNAMENT_BEGIN,
   DELETE_TOURNAMENT_SUCCESS,
   DELETE_TOURNAMENT_FAILURE,
+  CREATE_TOURNAMENT_BEGIN,
+  CREATE_TOURNAMENT_SUCCESS,
+  CREATE_TOURNAMENT_FAILURE,
 } from '../actions/tournament';
 import { Tournament } from '../types/Tournament';
 
@@ -118,6 +121,22 @@ export default function tournaments(
         loading: false,
         error: true,
         tournaments: [],
+      };
+
+    case CREATE_TOURNAMENT_BEGIN:
+      return {
+        ...state,
+      };
+
+    case CREATE_TOURNAMENT_SUCCESS:
+      return {
+        ...state,
+        tournaments: [action.payload.tournament, ...state.tournaments],
+      };
+
+    case CREATE_TOURNAMENT_FAILURE:
+      return {
+        ...state,
       };
 
     default:
