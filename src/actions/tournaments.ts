@@ -31,3 +31,36 @@ export async function fetchTournaments(dispatch: Dispatch<AnyAction>) {
 
   dispatch(fetchTournamentsSuccess(tournaments));
 }
+
+export const SEARCH_TOURNAMENTS_BEGIN = 'SEARCH_TOURNAMENTS_BEGIN';
+export const SEARCH_TOURNAMENTS_SUCCESS = 'SEARCH_TOURNAMENTS_SUCCESS';
+export const SEARCH_TOURNAMENTS_FAILURE = 'SEARCH_TOURNAMENTS_FAILURE';
+
+export const searchTournamentsBegin = () => ({
+  type: SEARCH_TOURNAMENTS_BEGIN,
+});
+
+export const searchTournamentsSuccess = (tournaments: Tournament[]) => ({
+  type: SEARCH_TOURNAMENTS_SUCCESS,
+  payload: { tournaments },
+});
+
+export const searchTournamentsFailure = () => ({
+  type: SEARCH_TOURNAMENTS_FAILURE,
+});
+
+export async function searchTournaments(
+  dispatch: Dispatch<AnyAction>,
+  query: string
+) {
+  dispatch(searchTournamentsBegin());
+
+  const tournaments = await request<Tournament[]>(
+    `${API_TOURNAMENTS_URL}?q=${query}`
+  );
+  if (!tournaments) {
+    return dispatch(searchTournamentsFailure());
+  }
+
+  dispatch(searchTournamentsSuccess(tournaments));
+}
