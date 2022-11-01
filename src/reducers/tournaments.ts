@@ -3,6 +3,11 @@ import {
   FETCH_TOURNAMENTS_FAILURE,
   FETCH_TOURNAMENTS_SUCCESS,
 } from '../actions/tournaments';
+import {
+  EDIT_TOURNAMENT_BEGIN,
+  EDIT_TOURNAMENT_SUCCESS,
+  EDIT_TOURNAMENT_FAILURE,
+} from '../actions/tournament';
 import { Tournament } from '../types/Tournament';
 
 const initialState = {
@@ -19,7 +24,7 @@ export default function tournaments(
   } = initialState,
   action: {
     type: string;
-    payload: { tournaments: Tournament[] };
+    payload: { tournaments: Tournament[]; tournament: Tournament };
   }
 ) {
   switch (action.type) {
@@ -43,6 +48,26 @@ export default function tournaments(
         loading: false,
         error: true,
         tournaments: [],
+      };
+
+    case EDIT_TOURNAMENT_BEGIN:
+      return {
+        ...state,
+      };
+
+    case EDIT_TOURNAMENT_SUCCESS:
+      return {
+        ...state,
+        tournaments: state.tournaments.map((tournament) =>
+          tournament.id === action.payload.tournament.id
+            ? { ...tournament, ...action.payload.tournament }
+            : tournament
+        ),
+      };
+
+    case EDIT_TOURNAMENT_FAILURE:
+      return {
+        ...state,
       };
 
     default:
