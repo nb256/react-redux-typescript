@@ -122,4 +122,42 @@ describe('Home', () => {
 
     expect(firstTournament).toBeInTheDocument();
   });
+
+  it('should search tournaments', async () => {
+    render(
+      <AppReduxWrapper>
+        <Home />
+      </AppReduxWrapper>
+    );
+
+    const searchInput = screen.getByPlaceholderText('Search tournament ...');
+    await waitFor(() =>
+      expect(screen.getAllByTestId('tournament')[0]).toBeInTheDocument()
+    );
+    const firstTournament = screen.getAllByTestId('tournament')[0];
+
+    const firstTournamentName =
+      within(firstTournament).getByTestId('tournament-name').textContent;
+
+    if (!firstTournamentName) {
+      throw new Error('firstTournamentName is undefined');
+    }
+
+    await userEvent.type(searchInput, firstTournamentName);
+    await waitFor(() =>
+      expect(screen.getAllByTestId('tournament').length === 1).toBeTruthy()
+    );
+
+    expect(
+      screen.getByText(firstTournamentName, {
+        exact: false,
+      })
+    ).toBeInTheDocument();
+
+    await userEvent.type(searchInput, 'asdasdasdasdasda');
+
+    await waitFor(() =>
+      expect(screen.getByText('No tournaments found.')).toBeInTheDocument()
+    );
+  });
 });

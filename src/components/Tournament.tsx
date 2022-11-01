@@ -67,7 +67,7 @@ export default function Tournament({
 
   return (
     <Container data-testid="tournament">
-      <H6>{name}</H6>
+      <H6 data-testid="tournament-name">{name}</H6>
 
       <div>Organizer: {organizer}</div>
       <div>Game: {game}</div>
