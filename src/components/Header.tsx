@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import debounce from 'lodash.debounce';
+import { useNavigate } from 'react-router-dom';
 
 import useSearchTournament from '../hooks/useSearchTournament';
-
 import Button from './Button';
 import Input from './Input';
 import useCreateTournament from '../hooks/useCreateTournament';
@@ -18,10 +18,17 @@ const Container = styled.div`
 export default function Header() {
   const { searchTournament } = useSearchTournament();
   const { createTournament } = useCreateTournament();
+  const navigate = useNavigate();
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedSearch = useCallback(
-    debounce((query) => searchTournament(query), 500),
+    debounce((query) => {
+      searchTournament(query);
+      navigate({
+        pathname: '/',
+        search: `query=${query}`,
+      });
+    }, 500),
     [searchTournament]
   );
 
@@ -39,11 +46,19 @@ export default function Header() {
     createTournament({ name: tournamentName });
   };
 
+  const onSearch = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { value } = e.target;
+      debouncedSearch(value);
+    },
+    [debouncedSearch]
+  );
+
   return (
     <Container>
       <Input
         placeholder="Search tournament ..."
-        onChange={(e) => debouncedSearch(e.target.value)}
+        onChange={onSearch}
         data-testid="search-input"
       />
       <Button onClick={onCreate}>CREATE TOURNAMENT</Button>
