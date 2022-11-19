@@ -23,11 +23,13 @@ export default function Header() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedSearch = useCallback(
     debounce((query) => {
-      searchTournament(query);
-      navigate({
-        pathname: '/',
-        search: `query=${query}`,
-      });
+      if (validateTournamentName(query)) {
+        searchTournament(query);
+        navigate({
+          pathname: '/',
+          search: `query=${query}`,
+        });
+      }
     }, 500),
     [searchTournament]
   );
