@@ -1,5 +1,3 @@
-import { useSelector, useDispatch } from 'react-redux';
-
 import {
   getTournamentsError,
   getTournamentsLoading,
@@ -8,12 +6,13 @@ import {
 import { createTournament as createTournamentAction } from '../actions/tournament';
 
 import { Tournament } from '../types/Tournament';
+import { useAppDispatch, useAppSelector } from '../store';
 
 export default function useCreateTournament() {
-  const loading = useSelector(getTournamentsLoading);
-  const error = useSelector(getTournamentsError);
+  const loading = useAppSelector(getTournamentsLoading);
+  const error = useAppSelector(getTournamentsError);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const createTournament = (tournament: Partial<Tournament>) =>
     createTournamentAction(dispatch, tournament);

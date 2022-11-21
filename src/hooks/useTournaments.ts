@@ -1,6 +1,4 @@
 import { useEffect, useMemo } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-
 import {
   getTournaments,
   getTournamentsError,
@@ -8,14 +6,15 @@ import {
 } from '../selectors/tournaments';
 import { fetchTournaments, searchTournaments } from '../actions/tournaments';
 import { useLocation } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../store';
 
 export default function useTournaments() {
   const { search } = useLocation();
-  const tournaments = useSelector(getTournaments);
-  const loading = useSelector(getTournamentsLoading);
-  const error = useSelector(getTournamentsError);
+  const tournaments = useAppSelector(getTournaments);
+  const loading = useAppSelector(getTournamentsLoading);
+  const error = useAppSelector(getTournamentsError);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     fetchTournaments(dispatch);

@@ -1,17 +1,16 @@
-import { useSelector, useDispatch } from 'react-redux';
-
 import {
   getTournamentsError,
   getTournamentsLoading,
 } from '../selectors/tournaments';
 
 import { searchTournaments as searchTournamentsAction } from '../actions/tournaments';
+import { useAppDispatch, useAppSelector } from '../store';
 
 export default function useSearchTournament() {
-  const loading = useSelector(getTournamentsLoading);
-  const error = useSelector(getTournamentsError);
+  const loading = useAppSelector(getTournamentsLoading);
+  const error = useAppSelector(getTournamentsError);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const searchTournament = (query: string) =>
     searchTournamentsAction(dispatch, query);
