@@ -1,7 +1,6 @@
 import { RootState } from '../reducers';
 
-export const getTournaments = (state: RootState) =>
-  state.tournaments.tournaments;
+export const getTournaments = (state: RootState) => state.tournaments.entities;
 
 export const getTournamentsLoading = (state: RootState) =>
   state.tournaments.loading;

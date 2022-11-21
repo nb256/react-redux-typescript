@@ -3,7 +3,7 @@ import {
   getTournamentsLoading,
 } from '../selectors/tournaments';
 
-import { searchTournaments as searchTournamentsAction } from '../actions/tournaments';
+import { searchTournaments as searchTournamentsAction } from '../features/tournaments';
 import { useAppDispatch, useAppSelector } from '../store';
 
 export default function useSearchTournament() {
@@ -13,7 +13,7 @@ export default function useSearchTournament() {
   const dispatch = useAppDispatch();
 
   const searchTournament = (query: string) =>
-    searchTournamentsAction(dispatch, query);
+    dispatch(searchTournamentsAction(query));
 
   return { error, loading, searchTournament };
 }

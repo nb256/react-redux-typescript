@@ -3,7 +3,7 @@ import {
   getTournamentsLoading,
 } from '../selectors/tournaments';
 
-import { deleteTournament as deleteTournamentAction } from '../actions/tournament';
+import { deleteTournament as deleteTournamentAction } from '../features/tournaments';
 import { useAppDispatch, useAppSelector } from '../store';
 
 export default function useDeleteTournament() {
@@ -13,7 +13,7 @@ export default function useDeleteTournament() {
   const dispatch = useAppDispatch();
 
   const deleteTournament = (tournamentId: string) =>
-    deleteTournamentAction(dispatch, tournamentId);
+    dispatch(deleteTournamentAction(tournamentId));
 
   return { error, loading, deleteTournament };
 }

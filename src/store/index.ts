@@ -1,12 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
-import thunk from 'redux-thunk';
 import rootReducer from '../reducers';
 
 const store = configureStore({
   reducer: rootReducer,
-  middleware: [thunk],
 });
 
 export default store;

@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
+import type { AsyncThunkAction } from '@reduxjs/toolkit';
 
 import Error from './Error';
 import Loading from './Loading';
 import Tournament from './Tournament';
 import theme from '../theme';
-import { Tournament as TournamentType } from '../types/Tournament';
+import type { Tournament as TournamentType } from '../types/Tournament';
 
 const Container = styled.div`
   display: grid;
@@ -21,12 +22,14 @@ type TournamentsProps = {
   tournaments: TournamentType[];
   error: boolean;
   loading: boolean;
-  retry: () => Promise<
-    | {
-        type: string;
-      }
-    | undefined
-  >;
+  retry: () =>
+    | Promise<
+        | {
+            type: string;
+          }
+        | undefined
+      >
+    | AsyncThunkAction<TournamentType[], void, {}>;
 };
 
 export default function Tournaments({

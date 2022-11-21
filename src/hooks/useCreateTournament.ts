@@ -3,7 +3,7 @@ import {
   getTournamentsLoading,
 } from '../selectors/tournaments';
 
-import { createTournament as createTournamentAction } from '../actions/tournament';
+import { createTournament as createTournamentAction } from '../features/tournaments';
 
 import { Tournament } from '../types/Tournament';
 import { useAppDispatch, useAppSelector } from '../store';
@@ -15,7 +15,7 @@ export default function useCreateTournament() {
   const dispatch = useAppDispatch();
 
   const createTournament = (tournament: Partial<Tournament>) =>
-    createTournamentAction(dispatch, tournament);
+    dispatch(createTournamentAction(tournament));
 
   return { error, loading, createTournament };
 }

@@ -1,11 +1,12 @@
 import { useEffect, useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
+
 import {
   getTournaments,
   getTournamentsError,
   getTournamentsLoading,
 } from '../selectors/tournaments';
-import { fetchTournaments, searchTournaments } from '../actions/tournaments';
-import { useLocation } from 'react-router-dom';
+import { fetchTournaments, searchTournaments } from '../features/tournaments';
 import { useAppDispatch, useAppSelector } from '../store';
 
 export default function useTournaments() {
@@ -17,7 +18,7 @@ export default function useTournaments() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    fetchTournaments(dispatch);
+    dispatch(fetchTournaments());
   }, [dispatch]);
 
   const query = useMemo(() => new URLSearchParams(search), [search]).get(
@@ -25,7 +26,7 @@ export default function useTournaments() {
   );
 
   const retry = () =>
-    query ? searchTournaments(dispatch, query) : fetchTournaments(dispatch);
+    query ? dispatch(searchTournaments(query)) : dispatch(fetchTournaments);
 
   return { tournaments, error, loading, retry };
 }
